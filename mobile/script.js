@@ -115,4 +115,12 @@ $(function() {
 		});
 		return false;
 	});
+	$("#wait_form").submit(function() {
+		var time = $(this).find('select option:selected').val();
+		var data = '{"locationId":"'+vip.location+'",';
+		data += '"apikey":"12345","appUserId":"test","time31":';
+		data += str(time)+'}';
+		$.post('http://thomaslevine.com:8080/location',data);
+		return false;
+	});
 });
