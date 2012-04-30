@@ -11,6 +11,7 @@ app = web.application(urls, globals())
 
 #web.config.debug = False
 
+GET_KEYS = set(['locationId', 'apikey', 'count'])
 MIN_KEYS = set(['locationId', 'apikey', 'userId'])
 MAX_KEYS = set([
     "locationId",
@@ -59,7 +60,14 @@ class everything:
         except Exception, msg:
             return json.dumps({"ok": False, "message": unicode(msg)})
 
-    GET = POST
+    def GET(self):
+        try:
+            apprequest = json.loads(web.data())
+            if set(apprequest.keys()) != set(GET_KEYS):
+                raise ValueError('You need to send %s' % ', '.join(list(GET_KEYS)))
+        except Exception, msg:
+            return json.dumps({"ok": False, "message": unicode(msg)})
+
     PUT = POST
 
 if __name__ == "__main__":
