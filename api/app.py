@@ -5,7 +5,8 @@ import datetime
 import requests
 
 urls = (
-    '/.*', 'everything'
+    '/', 'insert',
+    '/location/?', 'location',
 )
 app = web.application(urls, globals())
 
@@ -26,7 +27,7 @@ MAX_KEYS = set([
     "appspecific",
 ])
 
-class everything:
+class insert:
     def POST(self):
         'Query string like ?doc={saoehaostnoeau:asoetusoaestn,soe:soe} '
         try:
@@ -60,6 +61,7 @@ class everything:
         except Exception, msg:
             return json.dumps({"ok": False, "message": unicode(msg)})
 
+class location:
     def GET(self):
         try:
             apprequest = json.loads(web.data())
