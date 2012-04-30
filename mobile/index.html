@@ -75,7 +75,7 @@
 				<p>(From when you arrived to when you were finished voting.)</p>
 			</div>
 			<div data-role="fieldcontain">
-				<form>
+				<form id="wait_form">
 					<fieldset data-role="controlgroup">
 						<select name="select-choice-0" id="select-choice-0">
 							<option value="standard">Less than 10 Minutes</option>
@@ -88,8 +88,7 @@
 							<textarea cols="40" rows="8" name="textarea" id="textarea"
 								placeholder="Comment.. (Optional)"></textarea>
 							<br> <br>
-							<button data-role="button" data-inline="true" data-icon="plus">Add
-								My Wait Time</button>
+							<a href="#location"><button type="submit" data-role="button" data-inline="true" data-icon="plus">Add My Wait Time</button></a>
 						</div>
 					</fieldset>
 				</form>
