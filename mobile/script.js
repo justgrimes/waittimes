@@ -2,28 +2,25 @@ var vip = {
 	locations : [],
 	location : undefined,
 	BASE_API_URL : "http://api.votinginfoproject.org/vip/3.0/",
-	locationSelected: function(idx) {
+	locationSelected : function(idx) {
 		vip.location = vip.locations[idx];
 
 		var locationId = vip.location.id;
 		console.log("locationId" + locationId);
 
-		/*var url = "http://10.166.23.96:8080/location";
-
-		var data = {
-			apikey : 1,
-			locationId : locationId,
-			limit : 300
-		};
-
-		$.post(url, data, function(result) {
-			console.log(result);
-		}, "json");*/
+		/*
+		 * var url = "http://10.166.23.96:8080/location";
+		 * 
+		 * var data = { apikey : 1, locationId : locationId, limit : 300 };
+		 * 
+		 * $.post(url, data, function(result) { console.log(result); }, "json");
+		 */
 		
-		window.location="#location";
-	},
-	loadLocationInfo: function() {
-		alert('loading: '+ JSON.stringify(vip.location));
+		$(".location-name").text(vip.location.address.location_name);
+
+		window.location = "#location";
+
+//		alert('loading: ' + JSON.stringify(vip.location));
 	},
 	addListClickListeners : function() {
 		$("ul#locations a").click(function(e) {
@@ -72,12 +69,8 @@ var vip = {
 		vip.addListClickListeners();
 	},
 	searchFormatted : function(formattedAddress) {
-		// var address =
-		// "5008%2012th%20St%20S,%20Arlington,%20VA%2022204,%20USA";
 		var url = "http://mobile.votinginfoproject.org/electioncenter?jsonp=vip.vipCallback&address="
 				+ formattedAddress;
-
-		// $.mobile.showPageLoadingMsg("a", 'Finding Polling Locations');
 
 		var headID = document.getElementsByTagName("head")[0];
 		var newScript = document.createElement('script');
