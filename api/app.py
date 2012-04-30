@@ -23,6 +23,8 @@ MAX_KEYS = set([
     "appspecific",
 ])
 
+import datetime
+
 class everything:
     def POST(self):
         'Query string like ?doc={saoehaostnoeau:asoetusoaestn,soe:soe} '
@@ -38,7 +40,8 @@ class everything:
             elif MAX_KEYS.issuperset(doc.keys()):
                 raise ValueError('one of the keys you entered isn\'t allowed')
 
-            #"timeReceived": "2012-11-04 13:20:02 GMT-7",
+            # Validate times, but not now
+            doc["timeReceived"] = datetime.datetime.now().isoformat()
 
             # Hack
             doc['appId'] = doc['apikey']
