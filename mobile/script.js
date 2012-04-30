@@ -2,7 +2,7 @@ var vip = {
 	locations : [],
 	location : undefined,
 	BASE_API_URL : "http://api.votinginfoproject.org/vip/3.0/",
-	addListClickListeners: function() {
+	addListClickListeners : function() {
 		$("ul#locations a").click(function(e) {
 			e.preventDefault();
 			alert('clicked!');
@@ -109,20 +109,6 @@ var vip = {
 };
 
 $(function() {
-	/*
-	 * var house = 4205; var street = '6TH ST S'; var city = 'ARLINGTON'; var
-	 * state = 'VA'; var zip = 22204; var url = vip.BASE_API_URL +
-	 * "GetPollingLocations2?%24format=json"; url +=
-	 * "&key=DF798AA4-C20B-4473-B1B3-9A393CC1BCF3"; url += "&house=" + house +
-	 * "&street='" + street + "'&city='" + city + "'&state='" + state +
-	 * "'&zip='" + zip +
-	 * "'&$expand=Election/State/ElectionAdministration,Locations/PollingLocation/Address,Locations/SourceStreetSegment/NonHouseAddress&onlyUpcoming=false";
-	 * console.log(url); $.get(url, function(result) { var locations =
-	 * result.d.results.Locations; $("#locations").empty(); for ( var i in
-	 * locations) { var location = location[i]; $("#locations").append( "<a
-	 * href='#'>" + location.PollingLocation.Name + "</a>"); } });
-	 */
-
 	$("#search_form").submit(function() {
 		var str = $(this).find("#input_text").val();
 		vip.reverseGeocode(str, function(formatted) {
@@ -130,5 +116,4 @@ $(function() {
 		});
 		return false;
 	});
-
 });
