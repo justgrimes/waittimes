@@ -5,8 +5,8 @@ import datetime
 import requests
 
 urls = (
-    '/', 'insert',
     '/location/?', 'location',
+    '/.*', 'insert',
 )
 app = web.application(urls, globals())
 
@@ -28,6 +28,12 @@ MAX_KEYS = set([
 ])
 
 class insert:
+    def GET(self):
+        'Present docs'
+        return '''
+<h1>Wait Time API Docs</h1>
+<iframe src='http://pad.transparencycamp.org/p/waittimes?showControls=true&showChat=true&showLineNumbers=true&useMonospaceFont=false' width=100% height=80%>
+        '''
     def POST(self):
         'Query string like ?doc={saoehaostnoeau:asoetusoaestn,soe:soe} '
         try:
@@ -63,6 +69,8 @@ class insert:
         except Exception, msg:
             return json.dumps({"ok": False, "message": unicode(msg)})
 
+    PUT = POST
+
 class location:
     def GET(self):
         try:
@@ -75,8 +83,6 @@ class location:
             ).text
         except Exception, msg:
             return json.dumps({"ok": False, "message": unicode(msg)})
-
-    #PUT = POST
 
 if __name__ == "__main__":
     app.run()
