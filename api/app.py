@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import web
 import json
 
@@ -5,6 +6,8 @@ urls = (
     '/.*', 'everything'
 )
 app = web.application(urls, globals())
+
+#web.config.debug = False
 
 MIN_KEYS = set(['locationId', 'apikey', 'userId'])
 MAX_KEYS = set([
@@ -21,10 +24,9 @@ MAX_KEYS = set([
 ])
 
 class everything:
-    def GET(self):
+    def POST(self):
         'Query string like ?doc={saoehaostnoeau:asoetusoaestn,soe:soe} '
-        data = web.input()
-        doc = json.loads(data['doc'])
+        doc = json.loads(web.data())
 
         # Test this
         # doc['locationId']
@@ -43,8 +45,7 @@ class everything:
 
         return json.dumps(doc)
 
-    def POST(self, 
-
+    GET = POST
     PUT = POST
 
 if __name__ == "__main__":
