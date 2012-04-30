@@ -1,5 +1,6 @@
 var vip = {
 	locations : [],
+	formattedAddress : undefined,
 	location : undefined,
 	BASE_API_URL : "http://api.votinginfoproject.org/vip/3.0/",
 	locationSelected : function(idx) {
@@ -15,12 +16,12 @@ var vip = {
 		 * 
 		 * $.post(url, data, function(result) { console.log(result); }, "json");
 		 */
-		
+
 		$(".location-name").text(vip.location.address.location_name);
 
 		window.location = "#location";
 
-//		alert('loading: ' + JSON.stringify(vip.location));
+		// alert('loading: ' + JSON.stringify(vip.location));
 	},
 	addListClickListeners : function() {
 		$("ul#locations a").click(function(e) {
@@ -34,41 +35,48 @@ var vip = {
 	vipCallback : function(result) {
 		vip.locations = result.locations;
 		$("#locations").empty();
+		
+		if (vip.locations == undefined || vip.locations.length == 0) {
+			alert("No Polling Locations for the Address: "
+					+ vip.formattedAddress);
+		} else {
 
-		for ( var i = 0; i < vip.locations.length; i++) {
-			var location = vip.locations[i];
-			var address = location.address;
+			for ( var i = 0; i < vip.locations.length; i++) {
+				var location = vip.locations[i];
+				var address = location.address;
 
-			var html = "<li><a href='#location' idx='" + i + "'>";
-			html += address.location_name;
-			if (address.line1 != '') {
-				html += "<br>" + address.line1;
+				var html = "<li><a href='#location' idx='" + i + "'>";
+				html += address.location_name;
+				if (address.line1 != '') {
+					html += "<br>" + address.line1;
+				}
+
+				if (address.line2 != '') {
+					html += ", " + address.line2;
+				}
+
+				if (address.city != '') {
+					html += ", " + address.city;
+				}
+				if (address.state != '') {
+					html += ", " + address.state;
+				}
+
+				if (address.zip != '') {
+					html += " " + address.zip;
+				}
+
+				html += "</a></li>";
+				$("#locations").append(html);
 			}
 
-			if (address.line2 != '') {
-				html += ", " + address.line2;
-			}
-
-			if (address.city != '') {
-				html += ", " + address.city;
-			}
-			if (address.state != '') {
-				html += ", " + address.state;
-			}
-
-			if (address.zip != '') {
-				html += " " + address.zip;
-			}
-
-			html += "</a></li>";
-			$("#locations").append(html);
+			// Force Listview Redraw
+			$("ul#locations").listview('refresh');
+			vip.addListClickListeners();
 		}
-
-		// Force Listview Redraw
-		$("ul#locations").listview('refresh');
-		vip.addListClickListeners();
 	},
 	searchFormatted : function(formattedAddress) {
+		vip.formattedAddress = formattedAddress;
 		var url = "http://mobile.votinginfoproject.org/electioncenter?jsonp=vip.vipCallback&address="
 				+ formattedAddress;
 
@@ -95,7 +103,7 @@ var vip = {
 									} else {
 										var formattedAddress = result.formatted_address;
 										console.log(formattedAddress);
-										callback(formattedAddress);
+										vip.searchFormatted(formattedAddress);
 									}
 								} else {
 									alert("No results found");
@@ -110,11 +118,35 @@ var vip = {
 $(function() {
 	$("#search_form").submit(function() {
 		var str = $(this).find("#input_text").val();
-		vip.reverseGeocode(str, function(formatted) {
-			vip.searchFormatted(formatted);
-		});
+		vip.reverseGeocode(str);
 		return false;
 	});
+	if (navigator.geolocation) {
+		$("#find")
+				.append(
+						"<div class='center'><br><a id='current-location' href='#' data-role='button'>Use Current Location</a><br></div>");
+		$("#current-location")
+				.click(
+						function() {
+							navigator.geolocation
+									.getCurrentPosition(
+											function(position) {
+												$.mobile.hidePageLoadingMsg();
+												var latlng = new google.maps.LatLng(
+														position.coords.latitude,
+														position.coords.longitude);
+
+												var str = latlng.lat() + ","
+														+ latlng.lng();
+												vip.reverseGeocode(str);
+											},
+											function() {
+												alert("Error Occurred Getting Current Location");
+											});
+						});
+	} else {
+		error('not supported');
+	}
 	$("#wait_form").submit(function() {
 		var time = $(this).find('select option:selected').val();
 		var data = '{"locationId":"'+vip.location+'",';
