@@ -26,24 +26,26 @@ MAX_KEYS = set([
 class everything:
     def POST(self):
         'Query string like ?doc={saoehaostnoeau:asoetusoaestn,soe:soe} '
-        doc = json.loads(web.data())
+        try:
+            doc = json.loads(web.data())
 
-        # Test this
-        # doc['locationId']
+            # Test this
+            # doc['locationId']
 
-        # Minimum keys
-        if not MIN_KEYS.issubset(doc.keys()):
-            raise ValueError('locationId, apikey and userId are required.')
-        elif MAX_KEYS.issuperset(doc.keys()):
-            raise ValueError('one of the keys you entered isn\'t allowed')
+            # Minimum keys
+            if not MIN_KEYS.issubset(doc.keys()):
+                raise ValueError('locationId, apikey and userId are required.')
+            elif MAX_KEYS.issuperset(doc.keys()):
+                raise ValueError('one of the keys you entered isn\'t allowed')
 
-        #"timeReceived": "2012-11-04 13:20:02 GMT-7",
+            #"timeReceived": "2012-11-04 13:20:02 GMT-7",
 
-        # Hack
-        doc['appId'] = doc['apikey']
-        del(doc['apikey'])
-
-        return json.dumps(doc)
+            # Hack
+            doc['appId'] = doc['apikey']
+            del(doc['apikey'])
+            return json.dumps(doc)
+        except Exception, msg:
+            return json.dumps({"status": "error", "message": unicode(msg)})
 
     GET = POST
     PUT = POST
