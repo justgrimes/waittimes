@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import web
 import json
+import datetime
+import requests
 
 urls = (
     '/.*', 'everything'
@@ -23,8 +25,6 @@ MAX_KEYS = set([
     "appspecific",
 ])
 
-import datetime
-
 class everything:
     def POST(self):
         'Query string like ?doc={saoehaostnoeau:asoetusoaestn,soe:soe} '
@@ -46,9 +46,18 @@ class everything:
             # Hack
             doc['appId'] = doc['apikey']
             del(doc['apikey'])
-            return json.dumps(doc)
+
+            docs = json.dumps({"docs":[doc]})
+            dbresponse = requests.post(
+                'http://waittimes.iriscouch.com/waittimes/_bulk_docs',
+                docs,
+                headers = {
+                    'Content-Type': "application/json; charset=utf-8"
+                }
+            )
+            return dbresponse.text[1:-1] #Remove brackets from JSON list
         except Exception, msg:
-            return json.dumps({"status": "error", "message": unicode(msg)})
+            return json.dumps({"ok": False, "message": unicode(msg)})
 
     GET = POST
     PUT = POST
