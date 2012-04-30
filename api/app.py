@@ -41,6 +41,8 @@ class insert:
                 raise ValueError('locationId, apikey and appUserId are required.')
             elif MAX_KEYS.issuperset(doc.keys()):
                 raise ValueError('one of the keys you entered isn\'t allowed')
+            elif doc.keys().issubset(MIN_KEYS):
+                raise ValueError('must include at least one of time[1-3], timediff[21,31,32]')
 
             # Validate times, but not now
             doc["timeReceived"] = datetime.datetime.now().isoformat()
