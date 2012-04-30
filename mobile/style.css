@@ -8,6 +8,11 @@
 	text-align: center;
 }
 
+#find #current-location {
+	color: #FFFFFF;
+	text-align: center;
+}
+
 /** LOCATION **/
 #location {
 	
