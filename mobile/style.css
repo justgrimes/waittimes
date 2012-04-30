@@ -1,0 +1,44 @@
+/** GLOBAL **/
+.center {
+	text-align: center;
+}
+
+/** FIND **/
+#find h2 {
+	text-align: center;
+}
+
+/** LOCATION **/
+#location {
+	
+}
+
+#location h1 {
+	text-align: center;
+}
+
+#location h1.time {
+	display: block;
+	padding: 50px;
+	text-shadow: none;
+}
+
+.warn {
+	background: yellow;
+	color: #111111;
+}
+
+#location p {
+	text-align: center;
+}
+
+/*#location .buttons {
+	text-align: center;
+	margin: 0px auto;
+	display: block;
+}
+
+#location .buttons a {
+	width: 45%;
+	display: inline-block;
+}*/
