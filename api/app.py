@@ -12,7 +12,7 @@ app = web.application(urls, globals())
 #web.config.debug = False
 
 GET_KEYS = set(['locationId', 'apikey', 'limit'])
-MIN_KEYS = set(['locationId', 'apikey', 'userId'])
+MIN_KEYS = set(['locationId', 'apikey', 'appUserId'])
 MAX_KEYS = set([
     "locationId",
     "appId",
@@ -37,7 +37,7 @@ class everything:
 
             # Minimum keys
             if not MIN_KEYS.issubset(doc.keys()):
-                raise ValueError('locationId, apikey and userId are required.')
+                raise ValueError('locationId, apikey and appUserId are required.')
             elif MAX_KEYS.issuperset(doc.keys()):
                 raise ValueError('one of the keys you entered isn\'t allowed')
 
