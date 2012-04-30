@@ -11,7 +11,7 @@ app = web.application(urls, globals())
 
 #web.config.debug = False
 
-GET_KEYS = set(['locationId', 'apikey', 'count'])
+GET_KEYS = set(['locationId', 'apikey', 'limit'])
 MIN_KEYS = set(['locationId', 'apikey', 'userId'])
 MAX_KEYS = set([
     "locationId",
@@ -64,7 +64,12 @@ class everything:
         try:
             apprequest = json.loads(web.data())
             if set(apprequest.keys()) != set(GET_KEYS):
-                raise ValueError('You need to send %s' % ', '.join(list(GET_KEYS)))
+                raise ValueError('You need to send these and only these keys: %s' % ', '.join(list(GET_KEYS)))
+
+            apprequest['limit']
+            return requests.get(
+                'https://waittimes.iriscouch.com/waittimes/_design/all/_view/all?key={locationId}&limit={limit}'.format(**apprequest)
+            ).text
         except Exception, msg:
             return json.dumps({"ok": False, "message": unicode(msg)})
 
