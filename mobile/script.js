@@ -2,28 +2,35 @@ var vip = {
 	locations : [],
 	location : undefined,
 	BASE_API_URL : "http://api.votinginfoproject.org/vip/3.0/",
+	locationSelected: function(idx) {
+		vip.location = vip.locations[idx];
+
+		var locationId = vip.location.id;
+		console.log("locationId" + locationId);
+
+		/*var url = "http://10.166.23.96:8080/location";
+
+		var data = {
+			apikey : 1,
+			locationId : locationId,
+			limit : 300
+		};
+
+		$.post(url, data, function(result) {
+			console.log(result);
+		}, "json");*/
+		
+		window.location="#location";
+	},
+	loadLocationInfo: function() {
+		alert('loading: '+ JSON.stringify(vip.location));
+	},
 	addListClickListeners : function() {
 		$("ul#locations a").click(function(e) {
 			e.preventDefault();
-			alert('clicked!');
 			var idx = $(this).attr("idx");
 			console.log("index: " + idx);
-			vip.location = locations[idx];
-
-			var locationId = window.vip.location.id;
-			console.log("locationId" + locationId);
-
-			var url = "http://10.166.23.96:8080/location";
-
-			var data = {
-				apikey : 1,
-				locationId : locationId,
-				limit : 300
-			};
-
-			$.post(url, data, function(result) {
-				console.log(result);
-			}, "json");
+			vip.locationSelected(idx);
 			return false;
 		});
 	},
@@ -61,9 +68,8 @@ var vip = {
 		}
 
 		// Force Listview Redraw
-		$("ul").listview("refresh");
-		addListClickListeners();
-		// $.mobile.hidePageLoadingMsg();
+		$("ul#locations").listview('refresh');
+		vip.addListClickListeners();
 	},
 	searchFormatted : function(formattedAddress) {
 		// var address =
