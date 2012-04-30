@@ -66,7 +66,6 @@ class everything:
             if set(apprequest.keys()) != set(GET_KEYS):
                 raise ValueError('You need to send these and only these keys: %s' % ', '.join(list(GET_KEYS)))
 
-            apprequest['limit']
             return requests.get(
                 'https://waittimes.iriscouch.com/waittimes/_design/all/_view/all?key={locationId}&limit={limit}'.format(**apprequest)
             ).text
