@@ -79,7 +79,7 @@ class location:
                 raise ValueError('You need to send these and only these keys: %s' % ', '.join(list(GET_KEYS)))
 
             return requests.get(
-                'https://waittimes.iriscouch.com/waittimes/_design/all/_view/all?key={locationId}&limit={limit}'.format(**apprequest)
+                'https://waittimes.iriscouch.com/waittimes/_design/all/_view/all?key=%22{locationId}%22&limit={limit}'.format(**apprequest)
             ).text
         except Exception, msg:
             return json.dumps({"ok": False, "message": unicode(msg)})
