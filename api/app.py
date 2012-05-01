@@ -57,6 +57,10 @@ class insert:
             doc['appId'] = doc['apikey']
             del(doc['apikey'])
 
+
+            # Stringify the locationId
+            doc['locationId'] = unicode(doc['locationId'])
+
             docs = json.dumps({"docs":[doc]})
             dbresponse = requests.post(
                 'http://waittimes.iriscouch.com/waittimes/_bulk_docs',
